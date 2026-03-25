@@ -1,0 +1,146 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="私有写作台 | 笔记博客" description="登录后发布云端笔记">
+  <section class="admin-page reveal">
+    <h2>私有写作台</h2>
+    <p>本页不在公开导航中。请使用 Supabase 账号登录后发布笔记。</p>
+
+    <form id="auth-form" class="admin-form card">
+      <label>
+        邮箱
+        <input id="email" type="email" autocomplete="username" required />
+      </label>
+      <label>
+        密码
+        <input id="password" type="password" autocomplete="current-password" required />
+      </label>
+      <button type="submit">登录</button>
+      <p id="auth-status" class="meta"></p>
+    </form>
+
+    <form id="writer-form" class="admin-form card" style="display:none;">
+      <label>
+        标题
+        <input id="title" required minlength="2" maxlength="120" />
+      </label>
+
+      <label>
+        标签（英文逗号分隔）
+        <input id="tags" placeholder="Java, 面试, 八股" />
+      </label>
+
+      <label>
+        内容（Markdown）
+        <textarea id="content" rows="16" required></textarea>
+      </label>
+
+      <div style="display:flex; gap:10px;">
+        <button type="submit">发布</button>
+        <button id="logout-btn" type="button">退出登录</button>
+      </div>
+      <p id="writer-status" class="meta"></p>
+    </form>
+  </section>
+
+  <script>
+    import { supabase } from "../lib/supabase-browser";
+
+    const authForm = document.getElementById("auth-form");
+    const writerForm = document.getElementById("writer-form");
+    const authStatus = document.getElementById("auth-status");
+    const writerStatus = document.getElementById("writer-status");
+    const logoutBtn = document.getElementById("logout-btn");
+
+    const setWriterVisible = (visible) => {
+      if (writerForm) writerForm.style.display = visible ? "grid" : "none";
+      if (authForm) authForm.style.display = visible ? "none" : "grid";
+    };
+
+    const toSlug = (text) =>
+      text
+        .toLowerCase()
+        .trim()
+        .replace(/[^\p{Letter}\p{Number}]+/gu, "-")
+        .replace(/^-+|-+$/g, "") || `post-${Date.now()}`;
+
+    const refreshSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      setWriterVisible(!!data.session);
+    };
+
+    authForm?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email")?.value.trim();
+      const password = document.getElementById("password")?.value;
+
+      if (!email || !password) {
+        if (authStatus) authStatus.textContent = "请输入邮箱和密码。";
+        return;
+      }
+
+      if (authStatus) authStatus.textContent = "登录中...";
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+      if (error) {
+        if (authStatus) authStatus.textContent = `登录失败: ${error.message}`;
+        return;
+      }
+
+      if (authStatus) authStatus.textContent = "登录成功。";
+      await refreshSession();
+    });
+
+    writerForm?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const title = document.getElementById("title")?.value.trim() || "";
+      const tagsRaw = document.getElementById("tags")?.value || "";
+      const content = document.getElementById("content")?.value.trim() || "";
+
+      if (!title || !content) {
+        if (writerStatus) writerStatus.textContent = "标题和内容不能为空。";
+        return;
+      }
+
+      const tags = tagsRaw
+        .split(",")
+        .map((x) => x.trim())
+        .filter(Boolean);
+
+      const slug = toSlug(title);
+      const excerpt = content.slice(0, 120).replace(/\n/g, " ");
+
+      if (writerStatus) writerStatus.textContent = "发布中...";
+
+      const { error } = await supabase.from("posts").insert({
+        slug,
+        title,
+        content,
+        tags,
+        excerpt
+      });
+
+      if (error) {
+        if (writerStatus) writerStatus.textContent = `发布失败: ${error.message}`;
+        return;
+      }
+
+      if (writerStatus) writerStatus.textContent = `发布成功: ${slug}`;
+      writerForm.reset();
+    });
+
+    logoutBtn?.addEventListener("click", async () => {
+      await supabase.auth.signOut();
+      if (authStatus) authStatus.textContent = "已退出登录。";
+      if (writerStatus) writerStatus.textContent = "";
+      setWriterVisible(false);
+    });
+
+    supabase.auth.onAuthStateChange(() => {
+      refreshSession();
+    });
+
+    refreshSession();
+  </script>
+</BaseLayout>

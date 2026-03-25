@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="关于 | 笔记博客" description="关于这个个人知识博客">
+  <section class="about-page reveal">
+    <h2>关于这个站点</h2>
+    <p>
+      这是一个基于 Astro 构建的个人知识博客，用于持续沉淀后端技术、面试八股和工程化实践。
+    </p>
+
+    <div class="about-grid">
+      <article class="card">
+        <h3>写作目标</h3>
+        <ul>
+          <li>把零散知识整理为结构化内容</li>
+          <li>保留原理、边界和实践结论</li>
+          <li>形成可复用的面试和工作素材</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>站点技术栈</h3>
+        <ul>
+          <li>框架: Astro (Static Site)</li>
+          <li>内容: Markdown + Content Collections</li>
+          <li>部署: GitHub + Vercel</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+</BaseLayout>

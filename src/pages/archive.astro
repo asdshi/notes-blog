@@ -1,0 +1,42 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { fetchPosts, getPostDisplayDate } from "../lib/posts";
+
+const posts = await fetchPosts();
+
+const grouped = posts.reduce((acc, post) => {
+  const year = String(getPostDisplayDate(post).getFullYear());
+  if (!acc[year]) {
+    acc[year] = [];
+  }
+  acc[year].push(post);
+  return acc;
+}, {} as Record<string, typeof posts>);
+
+const years = Object.keys(grouped).sort((a, b) => Number(b) - Number(a));
+---
+
+<BaseLayout title="归档 | 笔记博客" description="按年份查看全部文章归档">
+  <section class="archive-head reveal">
+    <h2>归档</h2>
+    <p>按年份整理全部文章，便于回顾学习路径。</p>
+  </section>
+
+  {years.length === 0 ? (
+    <p>暂无文章。</p>
+  ) : (
+    years.map((year, i) => (
+      <section class="archive-year reveal" style={`animation-delay: ${120 + i * 70}ms;`}>
+        <h3>{year}</h3>
+        <ul class="archive-list">
+          {grouped[year].map((post) => (
+            <li>
+              <span class="date">{getPostDisplayDate(post).toLocaleDateString("zh-CN")}</span>
+              <a href={`/posts/${post.slug}/`}>{post.title}</a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  )}
+</BaseLayout>

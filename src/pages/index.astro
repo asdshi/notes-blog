@@ -1,0 +1,96 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { fetchPosts, getPostDisplayDate, getPostSummary } from "../lib/posts";
+
+const posts = await fetchPosts();
+
+const postCount = posts.length;
+const tagCount = new Set(posts.flatMap((post) => post.tags || [])).size;
+const featured = posts[0];
+const latest = posts.slice(1);
+---
+
+<BaseLayout title="首页 | 笔记博客" description="我的学习笔记与面试整理">
+  <section class="hero-grid reveal">
+    <article class="hero-main card">
+      <p class="hero-kicker">EDITORIAL NOTEBOOK / 2026</p>
+      <h2>把碎片化学习内容，整理成可持续迭代的知识出版物。</h2>
+      <p class="hero-desc">
+        这里不是单纯的文章列表，而是按主题演进的长期知识工程。
+      </p>
+      <div class="metrics">
+        <article>
+          <span>文章总数</span>
+          <strong>{postCount}</strong>
+        </article>
+        <article>
+          <span>主题标签</span>
+          <strong>{tagCount}</strong>
+        </article>
+        <article>
+          <span>架构</span>
+          <strong>Astro SSG</strong>
+        </article>
+      </div>
+    </article>
+    <aside class="hero-side card">
+      <h3>编写原则</h3>
+      <ul>
+        <li>概念先定义，再给边界。</li>
+        <li>从工程实践反推知识结构。</li>
+        <li>优先写可复用结论。</li>
+      </ul>
+    </aside>
+  </section>
+
+  {!!featured && (
+    <section class="reveal" style="animation-delay: 120ms;">
+      <div class="section-head">
+        <h3>精选文章</h3>
+      </div>
+      <article class="card feature-card">
+        <p class="meta">{getPostDisplayDate(featured).toLocaleDateString("zh-CN")}</p>
+        <h4>
+          <a href={`/posts/${featured.slug}/`}>{featured.title}</a>
+        </h4>
+        <p>{getPostSummary(featured)}</p>
+        {!!featured.tags?.length && (
+          <ul class="tags">
+            {featured.tags.map((tag) => (
+              <li>{tag}</li>
+            ))}
+          </ul>
+        )}
+      </article>
+    </section>
+  )}
+
+  <section class="reveal" style="animation-delay: 200ms;">
+    <div class="section-head">
+      <h3>最近更新</h3>
+      <a href="#">按时间排序</a>
+    </div>
+    {posts.length === 0 ? (
+      <p>数据库暂无文章，请先执行导入 SQL。</p>
+    ) : (
+      <div class="post-list">
+        {(latest.length ? latest : posts).map((post, index) => (
+          <article class="card post-item" style={`animation-delay: ${180 + index * 80}ms;`}>
+            <p class="meta">{getPostDisplayDate(post).toLocaleDateString("zh-CN")}</p>
+            <h4>
+              <a href={`/posts/${post.slug}/`}>{post.title}</a>
+            </h4>
+            <p>{getPostSummary(post)}</p>
+            {!!post.tags?.length && (
+              <ul class="tags">
+                {post.tags.map((tag) => (
+                  <li>{tag}</li>
+                ))}
+              </ul>
+            )}
+          </article>
+        ))}
+      </div>
+    )}
+  </section>
+</BaseLayout>

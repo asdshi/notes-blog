@@ -1,0 +1,24 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { marked } from "marked";
+import { fetchPosts, getPostDisplayDate, getPostSummary, type DbPost } from "../../lib/posts";
+
+export async function getStaticPaths() {
+  const posts = await fetchPosts();
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post }
+  }));
+}
+
+const { post } = Astro.props as { post: DbPost };
+const html = await marked.parse(post.content);
+---
+
+<BaseLayout title={`${post.title} | 笔记博客`} description={getPostSummary(post)}>
+  <article class="card">
+    <h2>{post.title}</h2>
+    <p class="meta">{getPostDisplayDate(post).toLocaleDateString("zh-CN")}</p>
+    <div class="post-content" set:html={html} />
+  </article>
+</BaseLayout>
