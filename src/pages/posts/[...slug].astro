@@ -1,17 +1,15 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { marked } from "marked";
-import { fetchPosts, getPostDisplayDate, getPostSummary, type DbPost } from "../../lib/posts";
+import { fetchPostBySlug, getPostDisplayDate, getPostSummary } from "../../lib/posts";
 
-export async function getStaticPaths() {
-  const posts = await fetchPosts();
-  return posts.map((post) => ({
-    params: { slug: post.slug },
-    props: { post }
-  }));
+const { slug } = Astro.params;
+const post = slug ? await fetchPostBySlug(slug) : null;
+
+if (!post) {
+  return Astro.redirect("/404");
 }
 
-const { post } = Astro.props as { post: DbPost };
 const html = await marked.parse(post.content);
 ---
 
