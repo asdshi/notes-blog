@@ -1,19 +1,5 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { fetchPosts, getPostDisplayDate } from "../lib/posts";
-
-const posts = await fetchPosts();
-
-const grouped = posts.reduce((acc, post) => {
-  const year = String(getPostDisplayDate(post).getFullYear());
-  if (!acc[year]) {
-    acc[year] = [];
-  }
-  acc[year].push(post);
-  return acc;
-}, {} as Record<string, typeof posts>);
-
-const years = Object.keys(grouped).sort((a, b) => Number(b) - Number(a));
 ---
 
 <BaseLayout title="归档 | 笔记博客" description="按年份查看全部文章归档">
@@ -22,21 +8,58 @@ const years = Object.keys(grouped).sort((a, b) => Number(b) - Number(a));
     <p>按年份整理全部文章，便于回顾学习路径。</p>
   </section>
 
-  {years.length === 0 ? (
-    <p>暂无文章。</p>
-  ) : (
-    years.map((year, i) => (
-      <section class="archive-year reveal" style={`animation-delay: ${120 + i * 70}ms;`}>
-        <h3>{year}</h3>
-        <ul class="archive-list">
-          {grouped[year].map((post) => (
-            <li>
-              <span class="date">{getPostDisplayDate(post).toLocaleDateString("zh-CN")}</span>
-              <a href={`/posts/${post.slug}/`}>{post.title}</a>
-            </li>
-          ))}
-        </ul>
-      </section>
-    ))
-  )}
+  <div id="archive-container">
+    <p class="meta">正在加载归档...</p>
+  </div>
+
+  <script>
+    import { supabase } from "../lib/supabase-browser";
+    import { esc } from "../lib/html";
+
+    async function loadArchive() {
+      const { data, error } = await supabase
+        .from("posts")
+        .select("slug,title,tags,excerpt,updated_at,created_at")
+        .order("updated_at", { ascending: false });
+
+      const container = document.getElementById("archive-container");
+      if (!container) return;
+
+      if (error || !data || data.length === 0) {
+        container.innerHTML = "<p>暂无文章。</p>";
+        return;
+      }
+
+      const grouped: Record<string, typeof data> = {};
+      for (const post of data) {
+        const year = String(new Date(post.updated_at || post.created_at).getFullYear());
+        if (!grouped[year]) grouped[year] = [];
+        grouped[year].push(post);
+      }
+
+      const years = Object.keys(grouped).sort((a, b) => Number(b) - Number(a));
+
+      container.innerHTML = years
+        .map(
+          (year, i) => `
+          <section class="archive-year reveal" style="animation-delay: ${120 + i * 70}ms;">
+            <h3>${year}</h3>
+            <ul class="archive-list">
+              ${grouped[year]
+                .map(
+                  (post) => `
+                <li>
+                  <span class="date">${new Date(post.updated_at || post.created_at).toLocaleDateString("zh-CN")}</span>
+                  <a href="/posts/${esc(post.slug)}/">${esc(post.title)}</a>
+                </li>`
+                )
+                .join("")}
+            </ul>
+          </section>`
+        )
+        .join("");
+    }
+
+    loadArchive();
+  </script>
 </BaseLayout>

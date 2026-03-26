@@ -1,0 +1,81 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="页面未找到 | 笔记博客" description="页面不存在">
+  <section class="card reveal" style="padding: 2rem;">
+    <div id="loading-state">
+      <p class="meta">正在加载...</p>
+    </div>
+    <div id="post-state" style="display:none;">
+      <h2 id="post-title"></h2>
+      <p class="meta" id="post-date"></p>
+      <div id="post-content" class="post-content"></div>
+    </div>
+    <div id="error-state" style="display:none;">
+      <h2>404 — 页面未找到</h2>
+      <p>您访问的页面不存在。</p>
+      <a href="/">← 返回首页</a>
+    </div>
+  </section>
+
+  <script>
+    import { supabase } from "../lib/supabase-browser";
+    import { marked } from "marked";
+
+    function showError() {
+      const loading = document.getElementById("loading-state");
+      const error = document.getElementById("error-state");
+      if (loading) loading.style.display = "none";
+      if (error) error.style.display = "block";
+    }
+
+    async function tryLoadPost() {
+      const path = window.location.pathname;
+      const slugMatch = path.match(/^\/posts\/([^/]+)\/?$/);
+
+      if (!slugMatch) {
+        showError();
+        return;
+      }
+
+      const slug = slugMatch[1];
+
+      try {
+        const { data: post, error } = await supabase
+          .from("posts")
+          .select("slug,title,content,tags,excerpt,updated_at,created_at")
+          .eq("slug", slug)
+          .maybeSingle();
+
+        if (error || !post) {
+          showError();
+          return;
+        }
+
+        document.title = `${post.title} | 笔记博客`;
+
+        const titleEl = document.getElementById("post-title");
+        const dateEl = document.getElementById("post-date");
+        const contentEl = document.getElementById("post-content");
+        const loadingEl = document.getElementById("loading-state");
+        const postEl = document.getElementById("post-state");
+
+        if (titleEl) titleEl.textContent = post.title;
+        if (dateEl)
+          dateEl.textContent = new Date(
+            post.updated_at || post.created_at
+          ).toLocaleDateString("zh-CN");
+        if (contentEl)
+          contentEl.innerHTML = await marked.parse(post.content);
+
+        if (loadingEl) loadingEl.style.display = "none";
+        if (postEl) postEl.style.display = "block";
+      } catch {
+        showError();
+      }
+    }
+
+    tryLoadPost();
+  </script>
+</BaseLayout>
