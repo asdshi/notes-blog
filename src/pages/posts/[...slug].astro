@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { marked } from "marked";
-import { fetchPosts, getPostDisplayDate, getPostSummary, type DbPost } from "../../lib/posts";
+import { fetchPosts, fetchPostBySlug, getPostDisplayDate, getPostSummary, type DbPost } from "../../lib/posts";
 
 export async function getStaticPaths() {
   const posts = await fetchPosts();
@@ -11,18 +11,35 @@ export async function getStaticPaths() {
   }));
 }
 
-const { post } = Astro.props as { post: DbPost };
-const html = await marked.parse(post.content);
+const { post } = Astro.props as { post?: DbPost };
+
+// If `post` is not provided via getStaticPaths props (dev/live fetch failure),
+// attempt to resolve it from the request params by slug so navigation works.
+let resolvedPost: DbPost | null | undefined = post;
+if (!resolvedPost) {
+  const rawSlug = Astro.params.slug;
+  // handle catch-all slug (array) or single string
+  const slug = Array.isArray(rawSlug) ? rawSlug.join("/") : String(rawSlug || "");
+  if (!slug) {
+    return Astro.redirect('/404');
+  }
+  resolvedPost = await fetchPostBySlug(slug);
+  if (!resolvedPost) {
+    return Astro.redirect('/404');
+  }
+}
+
+const html = await marked.parse(resolvedPost.content || '');
 ---
 
-<BaseLayout title={post.title + " | 笔记博客"} description={getPostSummary(post)}>
+<BaseLayout title={resolvedPost.title + " | 笔记博客"} description={getPostSummary(resolvedPost)}>
   <article class="reveal">
     <header class="post-header" style="margin-bottom: 32px;">
-      <p class="meta" style="border: none; margin-bottom: 8px;">{getPostDisplayDate(post).toLocaleDateString("zh-CN")}</p>  
-      <h1 style="font-family: var(--headline); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; text-transform: uppercase; margin: 0; line-height: 1.1; letter-spacing: -2px;">{post.title}</h1>
-      {!!post.tags?.length && (
+      <p class="meta" style="border: none; margin-bottom: 8px;">{getPostDisplayDate(resolvedPost).toLocaleDateString("zh-CN")}</p>
+      <h1 style="font-family: var(--headline); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; text-transform: uppercase; margin: 0; line-height: 1.1; letter-spacing: -2px;">{resolvedPost.title}</h1>
+      {!!resolvedPost.tags?.length && (
         <ul class="tags" style="border: none; padding-top: 24px;">
-          {post.tags.map((tag) => (
+          {resolvedPost.tags.map((tag) => (
             <li>{tag}</li>
           ))}
         </ul>
