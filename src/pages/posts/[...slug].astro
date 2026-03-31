@@ -15,10 +15,19 @@ const { post } = Astro.props as { post: DbPost };
 const html = await marked.parse(post.content);
 ---
 
-<BaseLayout title={`${post.title} | 笔记博客`} description={getPostSummary(post)}>
-  <article class="card">
-    <h2>{post.title}</h2>
-    <p class="meta">{getPostDisplayDate(post).toLocaleDateString("zh-CN")}</p>
+<BaseLayout title={post.title + " | 笔记博客"} description={getPostSummary(post)}>
+  <article class="reveal">
+    <header class="post-header" style="margin-bottom: 32px;">
+      <p class="meta" style="border: none; margin-bottom: 8px;">{getPostDisplayDate(post).toLocaleDateString("zh-CN")}</p>  
+      <h1 style="font-family: var(--headline); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; text-transform: uppercase; margin: 0; line-height: 1.1; letter-spacing: -2px;">{post.title}</h1>
+      {!!post.tags?.length && (
+        <ul class="tags" style="border: none; padding-top: 24px;">
+          {post.tags.map((tag) => (
+            <li>{tag}</li>
+          ))}
+        </ul>
+      )}
+    </header>
     <div class="post-content" set:html={html} />
   </article>
 </BaseLayout>

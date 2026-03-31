@@ -13,10 +13,10 @@ const grouped = posts.reduce((acc, post) => {
   return acc;
 }, {} as Record<string, typeof posts>);
 
-const years = Object.keys(grouped).sort((a, b) => Number(b) - Number(a));
+const years = Object.keys(grouped).sort((a, b) => Number(b) - Number(a));       
 ---
 
-<BaseLayout title="归档 | 笔记博客" description="按年份查看全部文章归档">
+<BaseLayout title="归档 | 笔记博客" description="按年份查看全部文章归档">       
   <section class="archive-head reveal">
     <h2>归档</h2>
     <p>按年份整理全部文章，便于回顾学习路径。</p>
@@ -32,7 +32,7 @@ const years = Object.keys(grouped).sort((a, b) => Number(b) - Number(a));
           {grouped[year].map((post) => (
             <li>
               <span class="date">{getPostDisplayDate(post).toLocaleDateString("zh-CN")}</span>
-              <a href={`/posts/${post.slug}/`}>{post.title}</a>
+              <h4><a href={`/posts/${post.slug}/`}>{post.title}</a></h4>
             </li>
           ))}
         </ul>
