@@ -491,6 +491,16 @@ header.site p {
   color: #fff;
 }
 
+.post-content img {
+  max-width: 100%;
+  height: auto;
+  border: var(--border-width) solid var(--border);
+  border-radius: 8px;
+  box-shadow: var(--shadow-md);
+  display: block;
+  margin: 24px 0;
+}
+
 @media (max-width: 768px) {
   .hero-grid {
     grid-template-columns: 1fr;

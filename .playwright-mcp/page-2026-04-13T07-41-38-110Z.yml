@@ -1,0 +1,105 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e3]:
+      - paragraph [ref=e4]: PERSONAL KNOWLEDGE SYSTEM
+      - heading "笔记大全" [level=1] [ref=e5]:
+        - link "笔记大全" [ref=e6] [cursor=pointer]:
+          - /url: /
+      - paragraph [ref=e7]: 面试八股、后端原理与工程化实践整理
+      - navigation "主导航" [ref=e8]:
+        - link "首页" [ref=e9] [cursor=pointer]:
+          - /url: /
+        - link "归档" [ref=e10] [cursor=pointer]:
+          - /url: /archive/
+        - link "简历" [ref=e11] [cursor=pointer]:
+          - /url: /resume/
+        - link "关于" [ref=e12] [cursor=pointer]:
+          - /url: /about/
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - heading "张子硕 Java 后端 / Agent 应用开发实习生" [level=1] [ref=e15]:
+          - text: 张子硕
+          - generic [ref=e16]: Java 后端 / Agent 应用开发实习生
+        - paragraph [ref=e17]: 求职意向：Java 后端开发工程师（AI Agent / RAG 方向）
+        - paragraph [ref=e18]: "邮箱: 1669455582@qq.com"
+      - generic [ref=e19]:
+        - heading "教育背景" [level=2] [ref=e20]
+        - generic [ref=e21]:
+          - paragraph [ref=e22]: 河南理工大学 | 计算机科学与技术 | 本科
+          - paragraph [ref=e23]: 2023.09 - 2027.06 | 英语：CET-6
+          - paragraph [ref=e24]: 主修课程：数据结构、计算机网络、计算机组成原理、Web 开发技术、面向对象程序设计
+      - generic [ref=e25]:
+        - heading "专业技能" [level=2] [ref=e26]
+        - list [ref=e28]:
+          - listitem [ref=e29]:
+            - strong [ref=e30]: 后端基础与开发框架
+            - text: ：熟练运用 Java 基础、集合、并发编程；掌握数据结构、计算机网络；熟练使用 Spring Boot、Spring Cloud、MyBatis/MyBatis-Plus；掌握 FastAPI 高效开发 RESTful 接口，理解 IoC/AOP 与微服务架构。
+          - listitem [ref=e31]:
+            - strong [ref=e32]: 数据存储与中间件
+            - text: ：
+            - list [ref=e33]:
+              - listitem [ref=e34]: •数据库：熟练使用 MySQL（索引、事务、MVCC、锁机制）、Redis（缓存一致性、穿透/击穿/雪崩）
+              - listitem [ref=e35]: •消息队列：掌握 RabbitMQ 异步通信与任务编排
+          - listitem [ref=e36]:
+            - strong [ref=e37]: AI Agent / RAG（核心方向）
+            - text: ：
+            - list [ref=e38]:
+              - listitem [ref=e39]: •全链路能力：文档解析、分块、Embedding、Milvus 向量检索、重排序、Prompt 工程、回答生成
+              - listitem [ref=e40]: •开发框架：熟练使用 LangChain / LangGraph、Spring AI、FastAPI 部署 AI 服务
+              - listitem [ref=e41]:
+                - text: •工程落地：Tool Calling、会话记忆、SSE 流式输出、模型路由、降级容错；
+                - strong [ref=e42]: 熟练运用 VibeCoding、MCP、Skills 进行 Web 应用开发
+      - generic [ref=e43]:
+        - heading "实习经历" [level=2] [ref=e44]
+        - generic [ref=e46]:
+          - paragraph [ref=e47]: 北京数能科技 | 后端开发实习生 2025.10 - 2026.02
+          - paragraph [ref=e48]: 主要经历：参与公司「奇华顿微信小程序」的后端开发与维护，负责核心接口开发与性能优化。
+          - list [ref=e49]:
+            - listitem [ref=e50]: 热点数据缓存落地：针对"活动详情查询"等高频读取场景，基于公司现有的 Redis 组件进行改造，将原有的直接查库逻辑优化为"缓存优先"模式，并采用逻辑过期（互斥锁）机制处理热点 Key，有效防止了潜在的缓存击穿风险。
+            - listitem [ref=e51]: 接口性能调优：主动使用 JMeter 对负责的核心接口进行压测，发现部分聚合查询存在性能瓶颈。通过引入 CompletableFuture 实现多线程并行调用，将接口响应时间（RT）从 800ms+ 稳定在 300ms 以内。
+            - listitem [ref=e52]: 规范执行与协作：严格遵循开发手册与 RESTful 规范，参与 Git Flow 分支管理，保障了代码合并的零冲突与可追溯性。
+      - generic [ref=e53]:
+        - heading "项目经历" [level=2] [ref=e54]
+        - generic [ref=e55]:
+          - generic [ref=e56]:
+            - paragraph [ref=e57]: RAG Agent 工业级知识检索与问答平台
+            - paragraph [ref=e58]: 技术栈：Python、FastAPI、LangGraph、Redis、MySQL、Chroma、SQLite、Hybrid Search、BM25、Cross-Encoder
+            - paragraph [ref=e59]: 工业级模块化 RAG Agent 平台，解决知识分散、检索不稳定、指代消歧困难等问题，可作为知识中台与 Agent 知识底座。
+            - list [ref=e60]:
+              - listitem [ref=e61]: 设计 BM25 + Dense Embedding 混合召回架构，采用 RRF 融合排序，支持 Cross-Encoder / LLM 重排，平衡检索查全率与查准率。
+              - listitem [ref=e62]: 搭建五阶段文档摄取流水线，完成 PDF 解析、语义切分、元数据增强、向量化与幂等入库。
+              - listitem [ref=e63]: 集成 Vision LLM 实现图片转文本，支持多模态内容检索，复用纯文本检索链路。
+              - listitem [ref=e64]: 基于 FastAPI + LangGraph 实现状态化对话闭环，支持意图识别、指代澄清与并行子查询拆分。
+              - listitem [ref=e65]: 采用 Redis + MySQL 混合会话存储，实现短期热缓存与长期记忆沉淀，保证多轮对话稳定性。
+          - generic [ref=e66]:
+            - paragraph [ref=e67]: Link-Health 智慧社区
+            - paragraph [ref=e68]: 技术栈：Spring Boot、Spring AI、MyBatis-Plus、Redis、MySQL、华为云 IoT、WebSocket、Activiti 8
+            - paragraph [ref=e69]: 集成 IoT 感知与 AI 自动化的智慧社区管理系统，围绕告警、报修与审批流程构建端到端后端服务能力。
+            - list [ref=e70]:
+              - listitem [ref=e71]: 接入 Spring AI Tool Calling，将自然语言报修诉求转译为结构化工单参数并自动落库，提升工单处理自动化程度。
+              - listitem [ref=e72]: 对接华为云 IoT 秒级设备上报，利用 Redis 异步缓冲削峰并减少 MySQL 写入压力，核心查询接口响应提升约 60%。
+              - listitem [ref=e73]: 构建告警规则引擎与阈值过滤策略，结合 WebSocket 实时推送异常事件，保障管理端及时感知风险。
+              - listitem [ref=e74]: 基于 Activiti 8 设计入驻审批流，支持并行审批与动态分支，缩短流程周转时间并提升可追踪性。
+          - generic [ref=e75]:
+            - paragraph [ref=e76]: 识途 Hub
+            - paragraph [ref=e77]: 技术栈：Spring Cloud 微服务、Spring Boot、MyBatis-Plus、Redis、MySQL、RabbitMQ、Elasticsearch
+            - paragraph [ref=e78]: 基于微服务架构的在线教育平台，提供课程发布、学生学习、讲师管理等完整功能，日均用户量 5K+。
+            - list [ref=e79]:
+              - listitem [ref=e80]: 接入 Spring AI 与 RAG 架构，结合向量数据库构建个性化知识库，显著提升复习答疑准确率。
+              - listitem [ref=e81]: 负责签到与积分模块优化，基于 Redis BitMap 存储并通过 MQ 推送积分，系统吞吐量提升 3 倍。
+              - listitem [ref=e82]: 构建积分排行榜，对签到、学习、问答等行为进行加权统计，支持多维数据可视化。
+              - listitem [ref=e83]: 设计优惠券生成与验证方案，采用按位加权求和与异步线程生成兑换码，结合 BitMap 防止重复兑换。
+              - listitem [ref=e84]: 使用 Redis 合并写请求与 DelayQueue，实现视频断点续播，数据库写入误差控制在 15 秒内。
+  - generic [ref=e87]:
+    - button "Menu" [ref=e88]:
+      - img [ref=e90]
+      - generic: Menu
+    - button "Inspect" [ref=e94]:
+      - img [ref=e96]
+      - generic: Inspect
+    - button "Audit" [ref=e98]:
+      - img [ref=e100]
+      - generic: Audit
+    - button "Settings" [ref=e103]:
+      - img [ref=e105]
+      - generic: Settings

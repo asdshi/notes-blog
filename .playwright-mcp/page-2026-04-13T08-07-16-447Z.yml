@@ -1,0 +1,40 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e3]:
+      - paragraph [ref=e4]: PERSONAL KNOWLEDGE SYSTEM
+      - heading "笔记大全" [level=1] [ref=e5]:
+        - link "笔记大全" [ref=e6] [cursor=pointer]:
+          - /url: /
+      - paragraph [ref=e7]: 面试八股、后端原理与工程化实践整理
+      - navigation "主导航" [ref=e8]:
+        - link "首页" [ref=e9] [cursor=pointer]:
+          - /url: /
+        - link "归档" [ref=e10] [cursor=pointer]:
+          - /url: /archive/
+        - link "简历" [ref=e11] [cursor=pointer]:
+          - /url: /resume/
+        - link "关于" [ref=e12] [cursor=pointer]:
+          - /url: /about/
+    - article [ref=e13]:
+      - generic [ref=e14]:
+        - paragraph [ref=e16]: 2026/4/13
+        - heading "额温枪" [level=1] [ref=e17]
+        - list [ref=e18]:
+          - listitem [ref=e19]: asd
+      - generic [ref=e20]:
+        - paragraph [ref=e21]: 仨
+        - paragraph [ref=e22]:
+          - img "image.png" [ref=e23]
+  - generic [ref=e26]:
+    - button "Menu" [ref=e27]:
+      - img [ref=e29]
+      - generic: Menu
+    - button "Inspect" [ref=e33]:
+      - img [ref=e35]
+      - generic: Inspect
+    - button "Audit" [ref=e37]:
+      - img [ref=e39]
+      - generic: Audit
+    - button "Settings" [ref=e42]:
+      - img [ref=e44]
+      - generic: Settings

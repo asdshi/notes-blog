@@ -1,6 +1,7 @@
 import { supabaseServer } from "./supabase-server";
 
 export interface DbPost {
+    id: number;
     slug: string;
     title: string;
     content: string;
@@ -10,7 +11,7 @@ export interface DbPost {
     updated_at: string;
 }
 
-const POST_FIELDS = "slug,title,content,tags,excerpt,created_at,updated_at";
+const POST_FIELDS = "id,slug,title,content,tags,excerpt,created_at,updated_at";
 
 export async function fetchPosts(): Promise<DbPost[]> {
     try {

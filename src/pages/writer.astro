@@ -3,46 +3,359 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout title="私有写作台 | 笔记博客" description="登录后发布云端笔记">
-  <section class="admin-page reveal">
-    <h2>私有写作台</h2>
-    <p>本页不在公开导航中。请使用 Supabase 账号登录后发布笔记。</p>
+  <section class="writer-page reveal">
+    <div class="writer-head">
+      <span class="eyebrow">AUTHENTICATED WORKSPACE</span>
+      <h1>私有写作台</h1>
+      <p>不在公开导航中。登录 Supabase 账号后即可发布云端笔记。</p>
+    </div>
 
-    <form id="auth-form" class="admin-form card">
-      <label>
-        邮箱
-        <input id="email" type="email" autocomplete="username" required />
-      </label>
-      <label>
-        密码
-        <input id="password" type="password" autocomplete="current-password" required />
-      </label>
-      <button type="submit">登录</button>
-      <p id="auth-status" class="meta"></p>
+    <!-- 登录表单 -->
+    <form id="auth-form" class="writer-card">
+      <div class="card-header">
+        <span class="badge">未登录</span>
+        <h2>作者登录</h2>
+      </div>
+
+      <div class="form-body">
+        <label class="field">
+          <span class="field-label">邮箱</span>
+          <input id="email" type="email" autocomplete="username" placeholder="you@example.com" required />
+        </label>
+
+        <label class="field">
+          <span class="field-label">密码</span>
+          <input id="password" type="password" autocomplete="current-password" placeholder="••••••••" required />
+        </label>
+
+        <button type="submit" class="btn btn-primary">登录</button>
+      </div>
+
+      <div class="card-footer">
+        <p id="auth-status" class="status"></p>
+      </div>
     </form>
 
-    <form id="writer-form" class="admin-form card" style="display:none;">
-      <label>
-        标题
-        <input id="title" required minlength="2" maxlength="120" />
-      </label>
-
-      <label>
-        标签（英文逗号分隔）
-        <input id="tags" placeholder="Java, 面试, 八股" />
-      </label>
-
-      <label>
-        内容（Markdown）
-        <textarea id="content" rows="16" required></textarea>
-      </label>
-
-      <div style="display:flex; gap:10px;">
-        <button type="submit">发布</button>
-        <button id="logout-btn" type="button">退出登录</button>
+    <!-- 写作表单 -->
+    <form id="writer-form" class="writer-card" style="display:none;">
+      <div class="card-header">
+        <span class="badge badge-live" id="mode-badge">已登录</span>
+        <h2 id="mode-title">新建文章</h2>
       </div>
-      <p id="writer-status" class="meta"></p>
+
+      <div class="form-body form-write">
+        <input type="hidden" id="post-id" />
+        <input type="hidden" id="original-slug" />
+
+        <div class="field-row">
+          <label class="field field-title">
+            <span class="field-label">标题</span>
+            <input id="title" required minlength="2" maxlength="120" placeholder="文章标题" />
+          </label>
+
+          <label class="field field-tags">
+            <span class="field-label">标签</span>
+            <input id="tags" placeholder="Java, 面试, 八股" />
+          </label>
+        </div>
+
+        <!-- 图片上传 -->
+        <div class="image-uploader">
+          <div class="field-label">插入图片</div>
+          <div id="drop-zone" class="drop-zone">
+            <input id="image-input" type="file" accept="image/*" />
+            <p>拖拽图片到此处，或 <span class="link">点击选择</span>，也可直接在编辑器中粘贴</p>
+            <p id="upload-status" class="upload-meta"></p>
+          </div>
+        </div>
+
+        <label class="field">
+          <span class="field-label">内容（Markdown）</span>
+          <textarea id="content" rows="16" required placeholder="# 标题&#10;&#10;正文内容..."></textarea>
+        </label>
+
+        <div class="editor-meta">
+          <span id="char-count">0 字</span>
+          <span>·</span>
+          <span id="read-time">约 0 分钟阅读</span>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn btn-primary" id="submit-btn">发布文章</button>
+          <a href="/" class="btn btn-ghost" id="cancel-btn" style="display:none;">取消</a>
+          <button id="logout-btn" type="button" class="btn btn-ghost">退出登录</button>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <p id="writer-status" class="status"></p>
+      </div>
     </form>
   </section>
+
+  <style>
+    .writer-page {
+      max-width: 880px;
+      margin: 0 auto;
+    }
+
+    .writer-head {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .writer-head h1 {
+      margin: 8px 0 6px;
+      font-family: var(--headline);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -1px;
+    }
+
+    .writer-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .writer-card {
+      border: var(--border-width) solid var(--border);
+      border-radius: 8px;
+      background: var(--paper);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 22px;
+      background: var(--bg);
+      border-bottom: var(--border-width) solid var(--border);
+    }
+
+    .card-header h2 {
+      margin: 0;
+      font-family: var(--headline);
+      font-size: 1.25rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .badge {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      border: 2px solid var(--border);
+      border-radius: 4px;
+      background: var(--paper);
+      box-shadow: 2px 2px 0 var(--border);
+    }
+
+    .badge-live {
+      background: var(--tag-bg-2);
+    }
+
+    .form-body {
+      padding: 22px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .form-write {
+      gap: 16px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .field-label {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .field input,
+    .field textarea {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 1rem;
+      line-height: 1.5;
+      border: var(--border-width) solid var(--border);
+      border-radius: 6px;
+      background: var(--paper);
+      box-shadow: 4px 4px 0 var(--border);
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .field input:focus,
+    .field textarea:focus {
+      box-shadow: 6px 6px 0 var(--accent-alt);
+      transform: translate(-2px, -2px);
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 260px;
+      font-family: var(--mono);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 640px) {
+      .field-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* 图片上传 */
+    .image-uploader {
+      display: grid;
+      gap: 6px;
+    }
+
+    .drop-zone {
+      position: relative;
+      padding: 18px;
+      border: 2px dashed var(--border);
+      border-radius: 6px;
+      background: var(--bg);
+      text-align: center;
+      transition: var(--transition);
+    }
+
+    .drop-zone.drag-over {
+      background: var(--tag-bg);
+      border-color: var(--accent-alt);
+    }
+
+    .drop-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .drop-zone p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .drop-zone .link {
+      color: var(--accent-alt);
+      font-weight: 700;
+      text-decoration: underline;
+    }
+
+    .upload-meta {
+      margin: 8px 0 0;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      font-weight: 700;
+      min-height: 1.2em;
+    }
+
+    .editor-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 20px;
+      font-family: var(--headline);
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      border: var(--border-width) solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 4px 4px 0 var(--border);
+      text-decoration: none;
+    }
+
+    .btn-primary:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 7px 7px 0 var(--border);
+    }
+
+    .btn-ghost:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 7px 7px 0 var(--border);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-ghost {
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .btn-ghost:hover {
+      background: var(--tag-bg);
+    }
+
+    .card-footer {
+      padding: 14px 22px;
+      background: var(--bg);
+      border-top: var(--border-width) solid var(--border);
+      min-height: 52px;
+    }
+
+    .status {
+      margin: 0;
+      font-family: var(--mono);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .status.ok {
+      color: #0b6e45;
+    }
+
+    .status.err {
+      color: var(--accent);
+    }
+
+    .status.loading {
+      color: var(--accent-alt);
+    }
+  </style>
 
   <script>
     import { supabase } from "../lib/supabase-browser";
@@ -52,10 +365,33 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     const authStatus = document.getElementById("auth-status");
     const writerStatus = document.getElementById("writer-status");
     const logoutBtn = document.getElementById("logout-btn");
+    const contentArea = document.getElementById("content");
+    const charCount = document.getElementById("char-count");
+    const readTime = document.getElementById("read-time");
+    const submitBtn = document.getElementById("submit-btn");
+    const cancelBtn = document.getElementById("cancel-btn");
+    const modeTitle = document.getElementById("mode-title");
+    const modeBadge = document.getElementById("mode-badge");
+    const postIdInput = document.getElementById("post-id");
+    const originalSlugInput = document.getElementById("original-slug");
+
+    const dropZone = document.getElementById("drop-zone");
+    const imageInput = document.getElementById("image-input");
+    const uploadStatus = document.getElementById("upload-status");
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const editSlug = urlParams.get("edit");
+    let isEditMode = false;
+
+    const setStatus = (el, text, type) => {
+      if (!el) return;
+      el.textContent = text;
+      el.className = "status" + (type ? " " + type : "");
+    };
 
     const setWriterVisible = (visible) => {
-      if (writerForm) writerForm.style.display = visible ? "grid" : "none";
-      if (authForm) authForm.style.display = visible ? "none" : "grid";
+      if (writerForm) writerForm.style.display = visible ? "block" : "none";
+      if (authForm) authForm.style.display = visible ? "none" : "block";
     };
 
     const toSlug = (text) =>
@@ -63,12 +399,156 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         .toLowerCase()
         .trim()
         .replace(/[^\p{Letter}\p{Number}]+/gu, "-")
-        .replace(/^-+|-+$/g, "") || `post-${Date.now()}`;
+        .replace(/^-+|--+|-+$/g, "") || `post-${Date.now()}`;
 
     const refreshSession = async () => {
       const { data } = await supabase.auth.getSession();
-      setWriterVisible(!!data.session);
+      const loggedIn = !!data.session;
+      setWriterVisible(loggedIn);
+      if (loggedIn && isEditMode) {
+        await loadEditPost();
+      }
     };
+
+    const updateMeta = () => {
+      const text = contentArea?.value || "";
+      const len = text.length;
+      const minutes = Math.max(1, Math.ceil(len / 400));
+      if (charCount) charCount.textContent = `${len} 字`;
+      if (readTime) readTime.textContent = `约 ${minutes} 分钟阅读`;
+    };
+
+    contentArea?.addEventListener("input", updateMeta);
+
+    // 插入 Markdown 到光标位置
+    const insertMarkdownAtCursor = (md) => {
+      if (!contentArea) return;
+      const start = contentArea.selectionStart;
+      const end = contentArea.selectionEnd;
+      const before = contentArea.value.substring(0, start);
+      const after = contentArea.value.substring(end);
+      const spacerBefore = before.endsWith("\n") || before === "" ? "" : "\n\n";
+      const spacerAfter = after.startsWith("\n") || after === "" ? "" : "\n\n";
+      contentArea.value = before + spacerBefore + md + spacerAfter + after;
+      const newPos = before.length + spacerBefore.length + md.length + spacerAfter.length;
+      contentArea.setSelectionRange(newPos, newPos);
+      contentArea.focus();
+      updateMeta();
+    };
+
+    // 上传图片到 Supabase Storage
+    const uploadImage = async (file) => {
+      if (!file || !file.type.startsWith("image/")) {
+        if (uploadStatus) uploadStatus.textContent = "请选择图片文件。";
+        return;
+      }
+
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (!sessionData.session) {
+        if (uploadStatus) uploadStatus.textContent = "请先登录后再上传图片。";
+        return;
+      }
+
+      const fileName = `${Date.now()}_${file.name.replace(/\s+/g, "_")}`;
+      if (uploadStatus) uploadStatus.textContent = `上传中: ${file.name} ...`;
+
+      const { error } = await supabase.storage
+        .from("blog-images")
+        .upload(fileName, file, {
+          cacheControl: "3600",
+          upsert: false,
+        });
+
+      if (error) {
+        if (uploadStatus) uploadStatus.textContent = `上传失败: ${error.message}`;
+        return;
+      }
+
+      const { data: urlData } = supabase.storage.from("blog-images").getPublicUrl(fileName);
+      const publicUrl = urlData?.publicUrl;
+      if (!publicUrl) {
+        if (uploadStatus) uploadStatus.textContent = "无法获取图片地址。";
+        return;
+      }
+
+      insertMarkdownAtCursor(`![${file.name}](${publicUrl})`);
+      if (uploadStatus) uploadStatus.textContent = `已插入: ${file.name}`;
+
+      if (imageInput) imageInput.value = "";
+    };
+
+    // 拖拽上传
+    dropZone?.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      dropZone.classList.add("drag-over");
+    });
+
+    dropZone?.addEventListener("dragleave", () => {
+      dropZone.classList.remove("drag-over");
+    });
+
+    dropZone?.addEventListener("drop", (e) => {
+      e.preventDefault();
+      dropZone.classList.remove("drag-over");
+      const file = e.dataTransfer?.files?.[0];
+      if (file) uploadImage(file);
+    });
+
+    imageInput?.addEventListener("change", (e) => {
+      const file = e.target.files?.[0];
+      if (file) uploadImage(file);
+    });
+
+    // 粘贴上传
+    contentArea?.addEventListener("paste", (e) => {
+      const items = e.clipboardData?.items;
+      if (!items) return;
+      for (const item of items) {
+        if (item.type.startsWith("image/")) {
+          e.preventDefault();
+          const file = item.getAsFile();
+          if (file) uploadImage(file);
+          break;
+        }
+      }
+    });
+
+    // 加载编辑文章
+    const loadEditPost = async () => {
+      if (!editSlug) return;
+      const { data, error } = await supabase
+        .from("posts")
+        .select("id,slug,title,content,tags,excerpt")
+        .eq("slug", editSlug)
+        .maybeSingle();
+
+      if (error || !data) {
+        setStatus(writerStatus, `加载文章失败: ${error?.message || "未找到"}`, "err");
+        return;
+      }
+
+      if (postIdInput) postIdInput.value = String(data.id);
+      if (originalSlugInput) originalSlugInput.value = data.slug;
+      document.getElementById("title").value = data.title || "";
+      document.getElementById("content").value = data.content || "";
+      document.getElementById("tags").value = (data.tags || []).join(", ");
+
+      if (modeTitle) modeTitle.textContent = "编辑文章";
+      if (modeBadge) modeBadge.textContent = "编辑中";
+      if (submitBtn) submitBtn.textContent = "更新文章";
+      if (cancelBtn) cancelBtn.style.display = "inline-flex";
+      isEditMode = true;
+      updateMeta();
+    };
+
+    // 初始化编辑模式
+    if (editSlug) {
+      isEditMode = true;
+      if (modeTitle) modeTitle.textContent = "编辑文章";
+      if (modeBadge) modeBadge.textContent = "编辑中";
+      if (submitBtn) submitBtn.textContent = "更新文章";
+      if (cancelBtn) cancelBtn.style.display = "inline-flex";
+    }
 
     authForm?.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -76,19 +556,19 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       const password = document.getElementById("password")?.value;
 
       if (!email || !password) {
-        if (authStatus) authStatus.textContent = "请输入邮箱和密码。";
+        setStatus(authStatus, "请输入邮箱和密码。", "err");
         return;
       }
 
-      if (authStatus) authStatus.textContent = "登录中...";
+      setStatus(authStatus, "登录中...", "loading");
       const { error } = await supabase.auth.signInWithPassword({ email, password });
 
       if (error) {
-        if (authStatus) authStatus.textContent = `登录失败: ${error.message}`;
+        setStatus(authStatus, `登录失败: ${error.message}`, "err");
         return;
       }
 
-      if (authStatus) authStatus.textContent = "登录成功。";
+      setStatus(authStatus, "登录成功。", "ok");
       await refreshSession();
     });
 
@@ -99,7 +579,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       const content = document.getElementById("content")?.value.trim() || "";
 
       if (!title || !content) {
-        if (writerStatus) writerStatus.textContent = "标题和内容不能为空。";
+        setStatus(writerStatus, "标题和内容不能为空。", "err");
         return;
       }
 
@@ -111,29 +591,50 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       const slug = toSlug(title);
       const excerpt = content.slice(0, 120).replace(/\n/g, " ");
 
-      if (writerStatus) writerStatus.textContent = "发布中...";
+      setStatus(writerStatus, isEditMode ? "更新中..." : "发布中...", "loading");
 
-      const { error } = await supabase.from("posts").insert({
-        slug,
-        title,
-        content,
-        tags,
-        excerpt
-      });
+      if (isEditMode) {
+        const postId = postIdInput?.value;
+        if (!postId) {
+          setStatus(writerStatus, "无法获取文章 ID。", "err");
+          return;
+        }
+        const { error } = await supabase
+          .from("posts")
+          .update({ slug, title, content, tags, excerpt, updated_at: new Date().toISOString() })
+          .eq("id", postId);
 
-      if (error) {
-        if (writerStatus) writerStatus.textContent = `发布失败: ${error.message}`;
-        return;
+        if (error) {
+          setStatus(writerStatus, `更新失败: ${error.message}`, "err");
+          return;
+        }
+        setStatus(writerStatus, `更新成功: ${slug}`, "ok");
+        if (originalSlugInput) originalSlugInput.value = slug;
+        window.history.replaceState({}, "", `/writer/?edit=${encodeURIComponent(slug)}`);
+      } else {
+        const { error } = await supabase.from("posts").insert({
+          slug,
+          title,
+          content,
+          tags,
+          excerpt
+        });
+
+        if (error) {
+          setStatus(writerStatus, `发布失败: ${error.message}`, "err");
+          return;
+        }
+        setStatus(writerStatus, `发布成功: ${slug}`, "ok");
+        writerForm.reset();
+        updateMeta();
+        if (uploadStatus) uploadStatus.textContent = "";
       }
-
-      if (writerStatus) writerStatus.textContent = `发布成功: ${slug}`;
-      writerForm.reset();
     });
 
     logoutBtn?.addEventListener("click", async () => {
       await supabase.auth.signOut();
-      if (authStatus) authStatus.textContent = "已退出登录。";
-      if (writerStatus) writerStatus.textContent = "";
+      setStatus(authStatus, "已退出登录。", "ok");
+      setStatus(writerStatus, "", "");
       setWriterVisible(false);
     });
 
@@ -142,5 +643,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     });
 
     refreshSession();
+    updateMeta();
   </script>
 </BaseLayout>

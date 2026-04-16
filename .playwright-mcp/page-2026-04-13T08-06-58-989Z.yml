@@ -1,0 +1,242 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e3]:
+      - paragraph [ref=e4]: PERSONAL KNOWLEDGE SYSTEM
+      - heading "笔记大全" [level=1] [ref=e5]:
+        - link "笔记大全" [ref=e6] [cursor=pointer]:
+          - /url: /
+      - paragraph [ref=e7]: 面试八股、后端原理与工程化实践整理
+      - navigation "主导航" [ref=e8]:
+        - link "首页" [ref=e9] [cursor=pointer]:
+          - /url: /
+        - link "归档" [ref=e10] [cursor=pointer]:
+          - /url: /archive/
+        - link "简历" [ref=e11] [cursor=pointer]:
+          - /url: /resume/
+        - link "关于" [ref=e12] [cursor=pointer]:
+          - /url: /about/
+    - generic [ref=e13]:
+      - article [ref=e14]:
+        - paragraph [ref=e15]: EDITORIAL NOTEBOOK / 2026
+        - heading "把碎片化学习内容，整理成可持续迭代的知识出版物。" [level=2] [ref=e16]
+        - paragraph [ref=e17]: 这里不是单纯的文章列表，而是按主题演进的长期知识工程。
+        - generic [ref=e18]:
+          - article [ref=e19]:
+            - generic [ref=e20]: 文章总数
+            - strong [ref=e21]: "20"
+          - article [ref=e22]:
+            - generic [ref=e23]: 主题标签
+            - strong [ref=e24]: "32"
+          - article [ref=e25]:
+            - generic [ref=e26]: 架构
+            - strong [ref=e27]: Astro SSG
+      - complementary [ref=e28]:
+        - heading "编写原则" [level=3] [ref=e29]
+        - list [ref=e30]:
+          - listitem [ref=e31]: 概念先定义，再给边界。
+          - listitem [ref=e32]: 从工程实践反推知识结构。
+          - listitem [ref=e33]: 优先写可复用结论。
+    - generic [ref=e34]:
+      - heading "精选文章" [level=3] [ref=e36]
+      - article [ref=e37]:
+        - text: FEATURED
+        - paragraph [ref=e38]: 2026/4/13
+        - heading "额温枪" [level=4] [ref=e39]:
+          - link "额温枪" [ref=e40] [cursor=pointer]:
+            - /url: /posts/额温枪/
+        - paragraph [ref=e41]: 仨 ![image.png](https://jlsgfgqgijjrelvgleji.supabase.co/storage/v1/object/public/blog-images/1776067177351_image.png)
+        - list [ref=e42]:
+          - listitem [ref=e43]: asd
+    - generic [ref=e44]:
+      - generic [ref=e45]:
+        - heading "最近更新" [level=3] [ref=e46]
+        - link "按时间排序" [ref=e47] [cursor=pointer]:
+          - /url: "#"
+      - generic [ref=e48]:
+        - article [ref=e49]:
+          - paragraph [ref=e50]: 2026/4/13
+          - heading "test20260413" [level=4] [ref=e51]:
+            - link "test20260413" [ref=e52] [cursor=pointer]:
+              - /url: /posts/test20260413/
+          - paragraph [ref=e53]: asd
+          - list [ref=e54]:
+            - listitem [ref=e55]: java
+        - article [ref=e56]:
+          - paragraph [ref=e57]: 2026/4/9
+          - heading "从 Activiti 到 LangGraph：为什么说 AI Agent 的本质是“工作流引擎”？" [level=4] [ref=e58]:
+            - link "从 Activiti 到 LangGraph：为什么说 AI Agent 的本质是“工作流引擎”？" [ref=e59] [cursor=pointer]:
+              - /url: /posts/从-activiti-到-langgraph-为什么说-ai-agent-的本质是-工作流引擎/
+          - paragraph [ref=e60]: "# 从 Activiti 到 LangGraph：为什么说 AI Agent 的本质是“工作流引擎”？ ### 引言 如果你是一名深耕 Java 领域、用过 **Activiti** 或 **Flowable** 的开发者，当你第一次接触"
+          - list [ref=e61]:
+            - listitem [ref=e62]: Activiti
+            - listitem [ref=e63]: LangGraph
+        - article [ref=e64]:
+          - paragraph [ref=e65]: 2026/4/9
+          - heading "LangGraph下Deep Agents 的动态智能体架构" [level=4] [ref=e66]:
+            - link "LangGraph下Deep Agents 的动态智能体架构" [ref=e67] [cursor=pointer]:
+              - /url: /posts/langgraph下deep-agents-的动态智能体架构/
+          - paragraph [ref=e68]: "# 告别硬编码工作流：深入理解 Deep Agents 的动态智能体架构 在传统的 AI 智能体开发（如 LangGraph 的标准用法）中，我们习惯于像画流程图一样定义节点（Node）和边（Edge）。这种“铁路模式”虽然稳定，但在面对"
+        - article [ref=e69]:
+          - paragraph [ref=e70]: 2026/4/9
+          - heading "停止歇斯底里的prompt调教：如何靠 Tool Calling 让 LLM 乖乖输出 JSON？" [level=4] [ref=e71]:
+            - link "停止歇斯底里的prompt调教：如何靠 Tool Calling 让 LLM 乖乖输出 JSON？" [ref=e72] [cursor=pointer]:
+              - /url: /posts/停止歇斯底里的prompt调教-如何靠-tool-calling-让-llm-乖乖输出-json/
+          - paragraph [ref=e73]: "# 停止歇斯底里的prompt调教：如何靠 Tool Calling 让 LLM 乖乖输出 JSON？ 在开发 AI 应用（如答题插件、数据爬虫或自动化 Agent）时，开发者最头疼的问题莫过于：如何让 LLM 100% 稳定输出格式完美"
+          - list [ref=e74]:
+            - listitem [ref=e75]: agent
+        - article [ref=e76]:
+          - paragraph [ref=e77]: 2026/4/9
+          - heading "rag agent工业级实现" [level=4] [ref=e78]:
+            - link "rag agent工业级实现" [ref=e79] [cursor=pointer]:
+              - /url: /posts/rag-agent工业级实现/
+          - paragraph [ref=e80]: "# 把一个 RAG 项目做成可插拔的知识基础设施 很多 RAG 项目看起来都像“能回答问题的 Demo”，但真正难的从来不是把答案跑出来，而是把它做成一套**可替换、可观测、可回归、可接入 Agent 生态**的知识基础设施。 这个项目"
+          - list [ref=e81]:
+            - listitem [ref=e82]: rag
+            - listitem [ref=e83]: agent
+            - listitem [ref=e84]: Langchain
+        - article [ref=e85]:
+          - paragraph [ref=e86]: 2026/4/9
+          - heading "LangGraph 工业级记忆模块实现深度指南" [level=4] [ref=e87]:
+            - link "LangGraph 工业级记忆模块实现深度指南" [ref=e88] [cursor=pointer]:
+              - /url: /posts/langgraph-工业级记忆模块实现深度指南/
+          - paragraph [ref=e89]: "# 告别 Token 焦虑：LangGraph 工业级记忆模块实现深度指南 在构建长对话 AI Agent 时，开发者通常会面临一个“不可能三角”：**对话长度**、**推理成本**（Token 消耗）以及**记忆准确度**。 传统的滑"
+          - list [ref=e90]:
+            - listitem [ref=e91]: agent
+        - article [ref=e92]:
+          - paragraph [ref=e93]: 2026/3/31
+          - heading "半自动答题插件实战" [level=4] [ref=e94]:
+            - link "半自动答题插件实战" [ref=e95] [cursor=pointer]:
+              - /url: /posts/local/projects/chaoxing-autohomework-semi-auto-qa/
+          - paragraph [ref=e96]: 超星作业半自动答题插件实战，围绕提取、生成、回填三步完成重复流程自动化。
+          - list [ref=e97]:
+            - listitem [ref=e98]: 自动化
+            - listitem [ref=e99]: Chrome扩展
+            - listitem [ref=e100]: AI工作流
+            - listitem [ref=e101]: 教育工具
+        - article [ref=e102]:
+          - paragraph [ref=e103]: 2026/3/31
+          - heading "拥抱自动化：使用 csdnAutoBlogMcp 实现 CSDN 博客的高效发布" [level=4] [ref=e104]:
+            - link "拥抱自动化：使用 csdnAutoBlogMcp 实现 CSDN 博客的高效发布" [ref=e105] [cursor=pointer]:
+              - /url: /posts/local/projects/csdn-auto-blog-mcp/
+          - paragraph [ref=e106]: 通过 csdnAutoBlogMcp 把 Markdown 发布流程接入 MCP，在 VS Code 中实现一键发布 CSDN 博客。
+          - list [ref=e107]:
+            - listitem [ref=e108]: CSDN
+            - listitem [ref=e109]: MCP
+            - listitem [ref=e110]: 自动化发布
+            - listitem [ref=e111]: AI工作流
+        - article [ref=e112]:
+          - paragraph [ref=e113]: 2026/3/31
+          - heading "Vibe Coding：用AI自动化办公流程的完整指南" [level=4] [ref=e114]:
+            - link "Vibe Coding：用AI自动化办公流程的完整指南" [ref=e115] [cursor=pointer]:
+              - /url: /posts/local/guides/vibe-coding-office-automation/
+          - paragraph [ref=e116]: 一篇面向初学者的 Vibe Coding 指南，涵盖目标定义、提示词编写、工具选择与迭代实践。
+          - list [ref=e117]:
+            - listitem [ref=e118]: Vibe Coding
+            - listitem [ref=e119]: AI自动化
+            - listitem [ref=e120]: 办公流程
+            - listitem [ref=e121]: Prompting
+        - article [ref=e122]:
+          - paragraph [ref=e123]: 2026/3/31
+          - heading "sada" [level=4] [ref=e124]:
+            - link "sada" [ref=e125] [cursor=pointer]:
+              - /url: /posts/sada/
+          - paragraph [ref=e126]: sadadsad
+          - list [ref=e127]:
+            - listitem [ref=e128]: jav
+        - article [ref=e129]:
+          - paragraph [ref=e130]: 2026/3/26
+          - heading "test1" [level=4] [ref=e131]:
+            - link "test1" [ref=e132] [cursor=pointer]:
+              - /url: /posts/test1/
+          - paragraph [ref=e133]: 阿是dAD
+          - list [ref=e134]:
+            - listitem [ref=e135]: java
+            - listitem [ref=e136]: sda
+        - article [ref=e137]:
+          - paragraph [ref=e138]: 2026/3/25
+          - heading "八股" [level=4] [ref=e139]:
+            - link "八股" [ref=e140] [cursor=pointer]:
+              - /url: /posts/local/八股资料/八股/
+          - paragraph [ref=e141]: 八股资料整理与常见题目汇总。
+          - list [ref=e142]:
+            - listitem [ref=e143]: 八股
+            - listitem [ref=e144]: 面试
+        - article [ref=e145]:
+          - paragraph [ref=e146]: 2026/3/25
+          - heading "八股精选50题" [level=4] [ref=e147]:
+            - link "八股精选50题" [ref=e148] [cursor=pointer]:
+              - /url: /posts/local/八股资料/八股精选50题/
+          - paragraph [ref=e149]: 八股精选 50 题速览。
+          - list [ref=e150]:
+            - listitem [ref=e151]: 八股
+            - listitem [ref=e152]: 面试
+            - listitem [ref=e153]: 精选50题
+        - article [ref=e154]:
+          - paragraph [ref=e155]: 2026/3/25
+          - heading "todoList" [level=4] [ref=e156]:
+            - link "todoList" [ref=e157] [cursor=pointer]:
+              - /url: /posts/local/todoList/
+          - paragraph [ref=e158]: "- [x] Task 1 算法题一道思考保持在半个小时以内,不要陷入思想漩涡 - [ ] Task 2 苍穹外卖推进一天 - [ ] Task 3 英语单词快速过 - [ ] Task 4 听一集听力 - [ ] 新建菜品 - [ ] 套餐修改 - [ ] 数据库日志出现数据库不"
+          - list [ref=e159]:
+            - listitem [ref=e160]: todoList.md
+            - listitem [ref=e161]: 本地导入
+        - article [ref=e162]:
+          - paragraph [ref=e163]: 2026/3/25
+          - heading "天机" [level=4] [ref=e164]:
+            - link "天机" [ref=e165] [cursor=pointer]:
+              - /url: /posts/local/tjxt笔记/天机/
+          - paragraph [ref=e166]: "1. mysql: root/123 2. ![alt text](image.png) 3. vmware 挂起会死机,可以直接重启. 4. nacos 删除 protocol协议 可以在gui页面下线 服务 https://blog.csdn.net/weixin_46462"
+          - list [ref=e167]:
+            - listitem [ref=e168]: tjxt笔记
+            - listitem [ref=e169]: 本地导入
+        - article [ref=e170]:
+          - paragraph [ref=e171]: 2026/3/25
+          - heading ".Vue 文件介绍" [level=4] [ref=e172]:
+            - link ".Vue 文件介绍" [ref=e173] [cursor=pointer]:
+              - /url: /posts/local/javaweb/vue/
+          - paragraph [ref=e174]: "# .Vue 文件介绍 1. 每一个.vue文件实际上的作用就是制作模版，然后将模版挂载到页面上,不同的vue文件通过import加载到同一个vue文件中,最后通过main.js的引入将vue文件挂载到页面上. 2. @Mapper注解的作用是将一个类的实例方法映射到一个接口上，"
+          - list [ref=e175]:
+            - listitem [ref=e176]: javaweb
+            - listitem [ref=e177]: 本地导入
+        - article [ref=e178]:
+          - paragraph [ref=e179]: 2026/3/25
+          - heading "欢迎来到我的笔记博客" [level=4] [ref=e180]:
+            - link "欢迎来到我的笔记博客" [ref=e181] [cursor=pointer]:
+              - /url: /posts/welcome/
+          - paragraph [ref=e182]: 这是站点骨架的第一篇文章，用于验证内容管线是否正常。
+          - list [ref=e183]:
+            - listitem [ref=e184]: 开始
+            - listitem [ref=e185]: Astro
+        - article [ref=e186]:
+          - paragraph [ref=e187]: 2026/3/25
+          - heading "云端初始化文章 1" [level=4] [ref=e188]:
+            - link "云端初始化文章 1" [ref=e189] [cursor=pointer]:
+              - /url: /posts/cloud-init-1/
+          - paragraph [ref=e190]: 这是一篇由 MCP 初始化写入的测试文章。
+          - list [ref=e191]:
+            - listitem [ref=e192]: Supabase
+            - listitem [ref=e193]: 初始化
+        - article [ref=e194]:
+          - paragraph [ref=e195]: 2026/3/25
+          - heading "云端初始化文章 2" [level=4] [ref=e196]:
+            - link "云端初始化文章 2" [ref=e197] [cursor=pointer]:
+              - /url: /posts/cloud-init-2/
+          - paragraph [ref=e198]: 数据库连接与发布链路已打通。
+          - list [ref=e199]:
+            - listitem [ref=e200]: Supabase
+            - listitem [ref=e201]: 发布
+  - generic [ref=e204]:
+    - button "Menu" [ref=e205]:
+      - img [ref=e207]
+      - generic: Menu
+    - button "Inspect" [ref=e211]:
+      - img [ref=e213]
+      - generic: Inspect
+    - button "Audit" [ref=e215]:
+      - generic [ref=e216]:
+        - img [ref=e217]
+        - img [ref=e220]
+      - generic: Audit
+    - button "Settings" [ref=e223]:
+      - img [ref=e225]
+      - generic: Settings

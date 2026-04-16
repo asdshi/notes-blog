@@ -1,0 +1,62 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e3]:
+      - paragraph [ref=e4]: PERSONAL KNOWLEDGE SYSTEM
+      - heading "笔记大全" [level=1] [ref=e5]:
+        - link "笔记大全" [ref=e6] [cursor=pointer]:
+          - /url: /
+      - paragraph [ref=e7]: 面试八股、后端原理与工程化实践整理
+      - navigation "主导航" [ref=e8]:
+        - link "首页" [ref=e9] [cursor=pointer]:
+          - /url: /
+        - link "归档" [ref=e10] [cursor=pointer]:
+          - /url: /archive/
+        - link "简历" [ref=e11] [cursor=pointer]:
+          - /url: /resume/
+        - link "关于" [ref=e12] [cursor=pointer]:
+          - /url: /about/
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - generic [ref=e15]: AUTHENTICATED WORKSPACE
+        - heading "私有写作台" [level=1] [ref=e16]
+        - paragraph [ref=e17]: 不在公开导航中。登录 Supabase 账号后即可发布云端笔记。
+      - generic [ref=e18]:
+        - generic [ref=e19]:
+          - generic [ref=e20]: 已登录
+          - heading "新建文章" [level=2] [ref=e21]
+        - generic [ref=e22]:
+          - generic [ref=e23]:
+            - generic [ref=e24]:
+              - generic [ref=e25]: 标题
+              - textbox "标题" [ref=e26]:
+                - /placeholder: 文章标题
+            - generic [ref=e27]:
+              - generic [ref=e28]: 标签
+              - textbox "标签" [ref=e29]:
+                - /placeholder: Java, 面试, 八股
+          - generic [ref=e30]:
+            - generic [ref=e31]: 内容（Markdown）
+            - textbox "内容（Markdown）" [ref=e32]:
+              - /placeholder: "# 标题\n\n正文内容..."
+          - generic [ref=e33]:
+            - generic [ref=e34]: 0 字
+            - generic [ref=e35]: ·
+            - generic [ref=e36]: 约 1 分钟阅读
+          - generic [ref=e37]:
+            - button "发布文章" [ref=e38] [cursor=pointer]
+            - button "退出登录" [ref=e39] [cursor=pointer]
+        - generic [ref=e40]:
+          - paragraph
+  - generic [ref=e43]:
+    - button "Menu" [ref=e44]:
+      - img [ref=e46]
+      - generic: Menu
+    - button "Inspect" [ref=e50]:
+      - img [ref=e52]
+      - generic: Inspect
+    - button "Audit" [ref=e54]:
+      - img [ref=e56]
+      - generic: Audit
+    - button "Settings" [ref=e59]:
+      - img [ref=e61]
+      - generic: Settings

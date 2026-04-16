@@ -13,12 +13,9 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props as { post?: DbPost };
 
-// If `post` is not provided via getStaticPaths props (dev/live fetch failure),
-// attempt to resolve it from the request params by slug so navigation works.
 let resolvedPost: DbPost | null | undefined = post;
 if (!resolvedPost) {
   const rawSlug = Astro.params.slug;
-  // handle catch-all slug (array) or single string
   const slug = Array.isArray(rawSlug) ? rawSlug.join("/") : String(rawSlug || "");
   if (!slug) {
     return Astro.redirect('/404');
@@ -35,7 +32,13 @@ const html = await marked.parse(resolvedPost.content || '');
 <BaseLayout title={resolvedPost.title + " | 笔记博客"} description={getPostSummary(resolvedPost)}>
   <article class="reveal">
     <header class="post-header" style="margin-bottom: 32px;">
-      <p class="meta" style="border: none; margin-bottom: 8px;">{getPostDisplayDate(resolvedPost).toLocaleDateString("zh-CN")}</p>
+      <div class="post-meta-bar">
+        <p class="meta" style="border: none; margin-bottom: 8px;">{getPostDisplayDate(resolvedPost).toLocaleDateString("zh-CN")}</p>
+        <div id="admin-toolbar" class="admin-toolbar" style="display:none;">
+          <a class="btn btn-sm btn-ghost" href={`/writer/?edit=${encodeURIComponent(resolvedPost.slug)}`}>编辑</a>
+          <button id="delete-btn" class="btn btn-sm btn-danger" data-slug={resolvedPost.slug}>删除</button>
+        </div>
+      </div>
       <h1 style="font-family: var(--headline); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; text-transform: uppercase; margin: 0; line-height: 1.1; letter-spacing: -2px;">{resolvedPost.title}</h1>
       {!!resolvedPost.tags?.length && (
         <ul class="tags" style="border: none; padding-top: 24px;">
@@ -47,4 +50,90 @@ const html = await marked.parse(resolvedPost.content || '');
     </header>
     <div class="post-content" set:html={html} />
   </article>
+
+  <style>
+    .post-meta-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .admin-toolbar {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      font-family: var(--headline);
+      font-weight: 700;
+      text-transform: uppercase;
+      border: var(--border-width) solid var(--border);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 3px 3px 0 var(--border);
+      text-decoration: none;
+    }
+
+    .btn-sm:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0 var(--border);
+    }
+
+    .btn-ghost {
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .btn-ghost:hover {
+      background: var(--tag-bg);
+    }
+
+    .btn-danger {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-danger:hover {
+      background: #d92a1a;
+    }
+  </style>
+
+  <script>
+    import { supabase } from "../../lib/supabase-browser";
+
+    const adminToolbar = document.getElementById("admin-toolbar");
+    const deleteBtn = document.getElementById("delete-btn");
+
+    const refreshToolbar = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data.session && adminToolbar) {
+        adminToolbar.style.display = "flex";
+      }
+    };
+
+    deleteBtn?.addEventListener("click", async () => {
+      const slug = deleteBtn.getAttribute("data-slug");
+      if (!slug) return;
+      if (!confirm("确定要删除这篇文章吗？此操作不可撤销。")) return;
+
+      const { error } = await supabase.from("posts").delete().eq("slug", slug);
+      if (error) {
+        alert(`删除失败: ${error.message}`);
+        return;
+      }
+      window.location.href = "/";
+    });
+
+    supabase.auth.onAuthStateChange(() => {
+      refreshToolbar();
+    });
+
+    refreshToolbar();
+  </script>
 </BaseLayout>
